@@ -86,6 +86,12 @@ public class CadastroActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
+                    Toast.makeText(CadastroActivity.this,
+                           "Logado com sucesso",
+                            Toast.LENGTH_SHORT).show();
+
+                }else{
+
                     String msg = "";
                     try{
                         throw task.getException();
@@ -102,11 +108,6 @@ public class CadastroActivity extends AppCompatActivity {
 
                     Toast.makeText(CadastroActivity.this,
                             msg,
-                            Toast.LENGTH_SHORT).show();
-
-                }else{
-                    Toast.makeText(CadastroActivity.this,
-                            "Erro ao cadastrar usuário",
                             Toast.LENGTH_SHORT).show();
                 }
             }
