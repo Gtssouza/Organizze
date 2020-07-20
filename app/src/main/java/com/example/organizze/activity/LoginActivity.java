@@ -3,6 +3,7 @@ package com.example.organizze.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -65,11 +66,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public void validarLogin(){
         auth = ConfiguracaoFireBase.getFireBaseAuth();
-        auth.signInWithEmailAndPassword(usuario.getEmail(), usuario.getSenha()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        auth.signInWithEmailAndPassword(
+                usuario.getEmail(),
+                usuario.getSenha()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(LoginActivity.this, "Logado com sucesso!",Toast.LENGTH_SHORT).show();
+                    abrirTelaPrincipal();
                 }else{
 
                     String msg = "";
@@ -89,4 +92,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void abrirTelaPrincipal(){
+        startActivity(new Intent(this, PrincipalActivity.class));
+        finish();
+    }
+
 }
