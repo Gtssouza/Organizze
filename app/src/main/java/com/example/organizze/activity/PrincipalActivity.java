@@ -25,6 +25,13 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });*/
 
+    }
+
+    public void adicionarDespesa(){
+
+    }
+
+    public void adicionarReceita(){
 
     }
 }
