@@ -28,7 +28,7 @@
             android:inputType="numberDecimal"
             android:padding="10dp"
             android:text="R$ 0.00"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewEnd"
             android:textColor="@android:color/white"
             android:textSize="30sp" />
     </LinearLayout>
@@ -100,6 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:clickable="true"
+        android:onClick="salvarDespesa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
