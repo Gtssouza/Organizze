@@ -25,9 +25,9 @@
             android:background="@android:color/transparent"
             android:ems="10"
             android:gravity="center"
+            android:hint="R$ 0.00"
             android:inputType="numberDecimal"
             android:padding="10dp"
-            android:text="R$ 0.00"
             android:textAlignment="viewEnd"
             android:textColor="@android:color/white"
             android:textSize="30sp" />
