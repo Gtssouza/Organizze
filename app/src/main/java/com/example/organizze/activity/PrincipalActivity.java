@@ -9,8 +9,11 @@ import android.view.View;
 import com.example.organizze.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 public class PrincipalActivity extends AppCompatActivity {
+
+    private MaterialCalendarView calendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
