@@ -33,6 +33,8 @@ public class ReceitasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setTitle("Receita");
         setContentView(R.layout.activity_receitas);
 
         campoData = findViewById(R.id.txtInputDataReceita);

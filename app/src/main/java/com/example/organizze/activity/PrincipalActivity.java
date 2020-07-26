@@ -1,15 +1,21 @@
 package com.example.organizze.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.organizze.R;
+import com.example.organizze.activity.config.ConfiguracaoFireBase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
@@ -18,11 +24,15 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private MaterialCalendarView calendarView;
     private TextView txtSaudacao, txtSaldo;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+
+        getSupportActionBar().setTitle("Menu Principal");
+        getSupportActionBar().getElevation();
 
         calendarView = findViewById(R.id.calendarView);
         txtSaudacao = findViewById(R.id.textSaudacao);
@@ -38,6 +48,25 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });*/
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_principal, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuSair :
+                auth = ConfiguracaoFireBase.getFireBaseAuth();
+                auth.signOut();
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void adicionarDespesa(View view){

@@ -34,6 +34,9 @@ public class DespesasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setTitle("Despesas");
+
         setContentView(R.layout.activity_despesas);
         campoData = findViewById(R.id.txtInpitDespesaData);
         campoCategoria = findViewById(R.id.txtInputDespesaTipo);
