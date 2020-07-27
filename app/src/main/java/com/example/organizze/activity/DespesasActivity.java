@@ -35,7 +35,7 @@ public class DespesasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle("Despesas");
+      //  getSupportActionBar().setTitle("Despesas");
 
         setContentView(R.layout.activity_despesas);
         campoData = findViewById(R.id.txtInpitDespesaData);
@@ -64,6 +64,7 @@ public class DespesasActivity extends AppCompatActivity {
             Double despesaAtualizada = despesaTotal + valorRecuperado;
             atualizarDespesa(despesaAtualizada);
             movimentacao.salvar(data);
+
         }
 
     }
