@@ -32,8 +32,12 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private MaterialCalendarView calendarView;
     private TextView txtSaudacao, txtSaldo;
+
     private FirebaseAuth auth = ConfiguracaoFireBase.getFireBaseAuth();
     private DatabaseReference dbref = ConfiguracaoFireBase.getFireBase();
+    private DatabaseReference usuarioRef;
+    private ValueEventListener valueEventListenerUsuario;
+
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double resumoUsuario = 0.0;
@@ -50,17 +54,21 @@ public class PrincipalActivity extends AppCompatActivity {
         txtSaudacao = findViewById(R.id.textSaudacao);
         txtSaldo = findViewById(R.id.textSaldo);
         configuraCalendarView();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         recuperarResumo();
-
-
     }
 
     public void recuperarResumo(){
         String emailUsuario = auth.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
-        DatabaseReference usuarioRef = dbref.child("usuarios").child(idUsuario);
+        usuarioRef = dbref.child("usuarios").child(idUsuario);
 
-        usuarioRef.addValueEventListener(new ValueEventListener() {
+        valueEventListenerUsuario = usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Usuario usuario = dataSnapshot.getValue(Usuario.class);
@@ -118,5 +126,11 @@ public class PrincipalActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        usuarioRef.removeEventListener(valueEventListenerUsuario);
     }
 }
