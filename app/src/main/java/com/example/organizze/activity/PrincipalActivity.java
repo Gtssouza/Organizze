@@ -3,6 +3,8 @@ package com.example.organizze.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +14,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.organizze.R;
+import com.example.organizze.activity.adapter.AdapterMovimentacao;
 import com.example.organizze.activity.config.ConfiguracaoFireBase;
 import com.example.organizze.activity.helper.Base64Custom;
+import com.example.organizze.activity.model.Movimentacao;
 import com.example.organizze.activity.model.Usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,11 +31,16 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
 
     private MaterialCalendarView calendarView;
     private TextView txtSaudacao, txtSaldo;
+    private RecyclerView recyclerView;
+    private AdapterMovimentacao adapterMovimentacao;
+    private List<Movimentacao> movimentacoes = new ArrayList<>();
 
     private FirebaseAuth auth = ConfiguracaoFireBase.getFireBaseAuth();
     private DatabaseReference dbref = ConfiguracaoFireBase.getFireBase();
@@ -49,11 +58,20 @@ public class PrincipalActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Menu Principal");
 
-
+        recyclerView = findViewById(R.id.recyclerMovimentos);
         calendarView = findViewById(R.id.calendarView);
         txtSaudacao = findViewById(R.id.textSaudacao);
         txtSaldo = findViewById(R.id.textSaldo);
         configuraCalendarView();
+
+        //Configurar adapter
+        adapterMovimentacao = new AdapterMovimentacao(movimentacoes, this);
+
+        //Configurar RecyclerView
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapterMovimentacao);
 
     }
 
