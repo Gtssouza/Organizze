@@ -46,6 +46,8 @@ public class PrincipalActivity extends AppCompatActivity {
     private DatabaseReference dbref = ConfiguracaoFireBase.getFireBase();
     private DatabaseReference usuarioRef;
     private ValueEventListener valueEventListenerUsuario;
+    private DatabaseReference movimentacaoRef = ConfiguracaoFireBase.getFireBase();
+    private String mesAnoSelecionado;
 
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
@@ -79,6 +81,7 @@ public class PrincipalActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         recuperarResumo();
+        recuperarMovimentacoes();
     }
 
     public void recuperarResumo(){
@@ -106,6 +109,12 @@ public class PrincipalActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void recuperarMovimentacoes(){
+        String emailUsuario = auth.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+        movimentacaoRef.child("movimentacao").child(idUsuario).child(mesAnoSelecionado);
     }
 
     @Override
@@ -138,10 +147,13 @@ public class PrincipalActivity extends AppCompatActivity {
         CharSequence meses[] = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
         calendarView.setTitleMonths(meses);
 
+        CalendarDay data = calendarView.getCurrentDate();
+        mesAnoSelecionado = String.valueOf((data.getMonth()+1) + "" + data.getYear());
+
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-
+                mesAnoSelecionado = String.valueOf((date.getMonth()+1) + "" + date.getYear());
             }
         });
     }
