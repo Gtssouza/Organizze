@@ -48,6 +48,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private ValueEventListener valueEventListenerUsuario;
     private DatabaseReference movimentacaoRef = ConfiguracaoFireBase.getFireBase();
     private String mesAnoSelecionado;
+    private ValueEventListener valueEventListenerMovimentacoes;
 
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
@@ -115,6 +116,21 @@ public class PrincipalActivity extends AppCompatActivity {
         String emailUsuario = auth.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
         movimentacaoRef.child("movimentacao").child(idUsuario).child(mesAnoSelecionado);
+
+        valueEventListenerMovimentacoes = movimentacaoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                movimentacoes.clear();
+                for(DataSnapshot dados: dataSnapshot.getChildren()){
+                    
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -162,5 +178,6 @@ public class PrincipalActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         usuarioRef.removeEventListener(valueEventListenerUsuario);
+        movimentacaoRef.removeEventListener(valueEventListenerMovimentacoes);
     }
 }
