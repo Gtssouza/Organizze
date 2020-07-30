@@ -3,11 +3,13 @@ package com.example.organizze.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +68,7 @@ public class PrincipalActivity extends AppCompatActivity {
         txtSaudacao = findViewById(R.id.textSaudacao);
         txtSaldo = findViewById(R.id.textSaldo);
         configuraCalendarView();
+        swipe();
 
         //Configurar adapter
         adapterMovimentacao = new AdapterMovimentacao(movimentacoes, this);
@@ -78,6 +81,31 @@ public class PrincipalActivity extends AppCompatActivity {
 
     }
 
+    public void swipe() {
+        ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int dragFlags = ItemTouchHelper.ACTION_STATE_IDLE;
+                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Log.i("swipe","item foi arrastado");
+            }
+        };
+
+        new ItemTouchHelper(itemTouch).attachToRecyclerView(recyclerView);
+
+    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -85,7 +113,7 @@ public class PrincipalActivity extends AppCompatActivity {
         recuperarMovimentacoes();
     }
 
-    public void recuperarResumo(){
+    public void recuperarResumo() {
         String emailUsuario = auth.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
         usuarioRef = dbref.child("usuarios").child(idUsuario);
@@ -112,7 +140,7 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
-    public void recuperarMovimentacoes(){
+    public void recuperarMovimentacoes() {
         String emailUsuario = auth.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
         movimentacaoRef = dbref.child("movimentacao").child(idUsuario).child(mesAnoSelecionado);
@@ -121,7 +149,7 @@ public class PrincipalActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 movimentacoes.clear();
-                for(DataSnapshot dados: dataSnapshot.getChildren()){
+                for (DataSnapshot dados : dataSnapshot.getChildren()) {
                     Movimentacao movimentacao = dados.getValue(Movimentacao.class);
                     movimentacoes.add(movimentacao);
                 }
@@ -143,8 +171,8 @@ public class PrincipalActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menuSair :
+        switch (item.getItemId()) {
+            case R.id.menuSair:
                 auth.signOut();
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
@@ -153,26 +181,26 @@ public class PrincipalActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void adicionarDespesa(View view){
+    public void adicionarDespesa(View view) {
         startActivity(new Intent(this, DespesasActivity.class));
     }
 
-    public void adicionarReceita(View view){
+    public void adicionarReceita(View view) {
         startActivity(new Intent(this, ReceitasActivity.class));
     }
 
-    public void configuraCalendarView(){
-        CharSequence meses[] = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
+    public void configuraCalendarView() {
+        CharSequence meses[] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
         calendarView.setTitleMonths(meses);
 
 
         CalendarDay data = calendarView.getCurrentDate();
-        String mesSelecionado = String.format("%02d",(data.getMonth()+1));
+        String mesSelecionado = String.format("%02d", (data.getMonth() + 1));
         mesAnoSelecionado = String.valueOf(mesSelecionado + "" + data.getYear());
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                String mesSelecionado = String.format("%02d",(date.getMonth()+1));
+                String mesSelecionado = String.format("%02d", (date.getMonth() + 1));
                 mesAnoSelecionado = String.valueOf(mesSelecionado + "" + date.getYear());
                 movimentacaoRef.removeEventListener(valueEventListenerMovimentacoes);
                 recuperarMovimentacoes();
@@ -186,4 +214,5 @@ public class PrincipalActivity extends AppCompatActivity {
         usuarioRef.removeEventListener(valueEventListenerUsuario);
         movimentacaoRef.removeEventListener(valueEventListenerMovimentacoes);
     }
+
 }
