@@ -13,10 +13,6 @@ import com.example.organizze.activity.model.Movimentacao;
 
 import java.util.List;
 
-/**
- * Created by Jamilton Damasceno
- */
-
 public class AdapterMovimentacao extends RecyclerView.Adapter<AdapterMovimentacao.MyViewHolder> {
 
     List<Movimentacao> movimentacoes;
@@ -41,6 +37,7 @@ public class AdapterMovimentacao extends RecyclerView.Adapter<AdapterMovimentaca
         holder.titulo.setText(movimentacao.getDescricao());
         holder.valor.setText(String.valueOf(movimentacao.getValor()));
         holder.categoria.setText(movimentacao.getCategoria());
+        holder.valor.setTextColor(context.getResources().getColor(R.color.colorAccentReceita));
 
         if (movimentacao.getTipo() == "d" || movimentacao.getTipo().equals("d")) {
             holder.valor.setTextColor(context.getResources().getColor(R.color.colorAccent));
