@@ -122,7 +122,7 @@ public class PrincipalActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 movimentacoes.clear();
                 for(DataSnapshot dados: dataSnapshot.getChildren()){
-                    
+                    Movimentacao movimentacao = dados.getValue(Movimentacao.class);
                 }
             }
 
@@ -163,13 +163,16 @@ public class PrincipalActivity extends AppCompatActivity {
         CharSequence meses[] = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
         calendarView.setTitleMonths(meses);
 
+
         CalendarDay data = calendarView.getCurrentDate();
-        mesAnoSelecionado = String.valueOf((data.getMonth()+1) + "" + data.getYear());
+        String mesSelecionado = String.format("%02d",(data.getMonth()+1));
+        mesAnoSelecionado = String.valueOf(mesSelecionado + "" + data.getYear());
 
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                mesAnoSelecionado = String.valueOf((date.getMonth()+1) + "" + date.getYear());
+                String mesSelecionado = String.format("%02d",(date.getMonth()+1));
+                mesAnoSelecionado = String.valueOf(mesSelecionado + "" + date.getYear());
             }
         });
     }
