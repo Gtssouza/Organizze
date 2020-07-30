@@ -126,6 +126,7 @@ public class PrincipalActivity extends AppCompatActivity {
                 movimentacaoRef = dbref.child("movimentacao").child(idUsuario).child(mesAnoSelecionado);
                 movimentacaoRef.child(movimentacao.getKey()).removeValue();
                 adapterMovimentacao.notifyItemRemoved(position);
+                atualizarSaldo();
             }
         });
 
@@ -197,6 +198,23 @@ public class PrincipalActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void atualizarSaldo(){
+
+        String emailUsuario = auth.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+        usuarioRef = dbref.child("usuarios").child(idUsuario);
+
+        if(movimentacao.getTipo().equals("r")){
+            receitaTotal = receitaTotal - movimentacao.getValor();
+            usuarioRef.child("receitaTotal").setValue(receitaTotal);
+
+        }
+        if(movimentacao.getTipo().equals("d")){
+            despesaTotal = despesaTotal - movimentacao.getValor();
+            usuarioRef.child("DespesaTotal").setValue(despesaTotal);
+        }
     }
 
     @Override
